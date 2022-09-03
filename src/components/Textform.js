@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 
 export default function Textform(props) {
+
+  
+
   const handleUpperClick = () => {
     // console.log("UpperClick " + text);
     let newText = text.toUpperCase();
     setText(newText);
-    props.showAlert("Converted to UPPERCASE", "success")
+    props.showAlert("Converted to UPPERCASE", "success");
   };
 
   const handleLowerClick = () => {
     // console.log("lowerclick " + text);
     let newText = text.toLowerCase();
     setText(newText);
-    props.showAlert("Converted to lowercase", "success")
-
+    props.showAlert("Converted to lowercase", "success");
   };
 
   const handleCamleCaseClick = () => {
@@ -24,8 +26,7 @@ export default function Textform(props) {
       .split(/[.\-_\s]/g)
       .reduce((string, word) => string + word[0].toUpperCase() + word.slice(1));
     setText(newText);
-    props.showAlert("Converted to camleCase", "success")
-
+    props.showAlert("Converted to camleCase", "success");
   };
 
   const handlePascalCaseClick = () => {
@@ -36,12 +37,17 @@ export default function Textform(props) {
         return chr.toUpperCase();
       });
     setText(newText);
-    props.showAlert("Converted to PascalCase", "success")
+    props.showAlert("Converted to PascalCase", "success");
+  };
 
+  const handleClearText = () => {
+    let newText ="";
+    setText(newText);
+    props.showAlert("Textarea cleared", "success");
   };
 
   const handleOnChange = (event) => {
-    console.log("On Change");
+    // console.log("On Change");
     setText(event.target.value);
   };
 
@@ -57,7 +63,7 @@ export default function Textform(props) {
           color: props.mode === "light" ? "black" : "white",
         }}
       >
-        <h1>{props.heading}</h1>
+        <h1 class="mb-3">{props.heading}</h1>
         <div className="mb-3">
           <textarea
             className="form-control"
@@ -71,21 +77,46 @@ export default function Textform(props) {
             rows="7"
           ></textarea>
         </div>
-        <button className="btn btn-primary" onClick={handleUpperClick}>
+        <button
+          disabled={text.length===0}
+          className="btn btn-primary mx-3 my-3"
+          onClick={handleUpperClick}
+        >
           Convert to UPPERCASE
         </button>
-        <button className="btn btn-primary mx-3" onClick={handleLowerClick}>
+
+        <button
+          disabled={text.length===0}
+          className="btn btn-primary mx-3 my-3"
+          onClick={handleLowerClick}
+        >
           Convert To lowercase
         </button>
-        <button className="btn btn-primary mx-3" onClick={handleCamleCaseClick}>
+
+        <button
+          disabled={text.length===0}
+          className="btn btn-primary mx-3 my-3"
+          onClick={handleCamleCaseClick}
+        >
           Convert To camleCase
         </button>
+
         <button
-          className="btn btn-primary mx-3"
+          disabled={text.length===0}
+          className="btn btn-primary mx-3 my-3"
           onClick={handlePascalCaseClick}
         >
           Convert To PascalCase
         </button>
+
+        <button
+          disabled={text.length===0}
+          className="btn btn-primary mx-3 my-3"
+          onClick={handleClearText}
+        >
+          Clear Text
+        </button>
+
       </div>
       <div
         className="container my-3"
@@ -95,11 +126,22 @@ export default function Textform(props) {
       >
         <h1>Your text summary</h1>
         <p>
-          {text.split(" ").length} words, {text.length} char
+          {
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length
+          }{" "}
+          words, {text.length} char
         </p>
-        <p>{0.008 * text.split(" ").length} minutes to read</p>
+        <p>
+          {0.008 *
+            text.split(" ").filter((element) => {
+              return element.length !== 0;
+            }).length}{" "}
+          minutes to read
+        </p>
         <h2>Preview</h2>
-        <p>{text.length > 0 ? text : "Enter something to preview"}</p>
+        <p>{text.length > 0 ? text : "Nothing to preview"}</p>
       </div>
     </>
   );
